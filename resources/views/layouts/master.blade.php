@@ -78,7 +78,7 @@
                 <div class="row">
                     <div class="col-md-2">
                         <a href="" class="btn btn-primary w-100 mb-2">Manage Borrowing</a>
-                        <a href="" class="btn btn-primary w-100 mb-2">List of Books</a>
+                        <a href="{{ route("books.index")}}" class="btn btn-primary w-100 mb-2">List of Books</a>
                         <a href="{{ route('books.create') }}" class="btn btn-primary w-100 mb-2">Add Books</a>
                         <a href="" class="btn btn-primary w-100 mb-2">Update Books</a>
                         <a href="" class="btn btn-primary w-100 mb-2">Delete Books</a>
