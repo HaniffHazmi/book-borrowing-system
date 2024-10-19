@@ -92,7 +92,7 @@ class BookController extends Controller
      */
     public function edit(Book $book)
     {
-        //
+        return view('book.edit', compact('book'));
     }
 
     /**
@@ -109,6 +109,39 @@ class BookController extends Controller
             'genre' => 'required|string|in:Fiction,Non-Fiction,Science Fiction,Biography',
             'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
         ]);
+
+        if ($request->hasFile('photo')){
+            $image = $request->file('photo');
+            $image_name = 'book_' . time() .'.'. $image->getClientOriginalExtension();
+
+            $directory = public_path('uploads/books');
+            if (!file_exists($directory)){
+                mkdir($directory,0755, true);
+            }
+
+            $resized_image = imagecreatetruecolor(300,300);
+            $source_image = ($image->getClientOriginalExtension() == 'png') ? imagecreatefrompng($image->getRealPath()) : imagecreatefromjpeg($image->getRealPath());
+            list($width, $height) = getimagesize($image->getRealPath());
+            imagecopyresampled($resized_image, $source_image, 0, 0, 0, 0, 300, 300, $width, $height);
+
+            if ($image->getClientOriginalExtension() == 'png') {
+                imagepng($resized_image, $directory . '/' . $image_name);
+            } else {
+                imagejpeg($resized_image, $directory . '/'. $image_name,80);
+            }
+
+            imagedestroy($resized_image );
+            imagedestroy($source_image);
+
+            $validated_data['photo'] = $image_name;
+
+        } else {
+            $validated_data['photo'] = $book->photo;
+        }
+
+        $book->update($validated_data);
+        
+        return redirect()->back()->with('message','Book updated succesfully');
     }
 
     /**
@@ -116,6 +149,7 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        //
+        $book->delete();
+        return redirect()->route('books.index')->with('message','Book deleted successfully');
     }
 }

@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BooksBorrowController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\BookController;
 /*
@@ -22,3 +23,7 @@ Auth::routes();
 Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 Route::resource('books', BookController::class);
+
+Route::resource('booksborrow', BooksBorrowController::class);
+
+Route::patch('/booksborrow/reserve/{book}',[BooksBorrowController::class,'reserve'])->name('booksborrow.reserve');
