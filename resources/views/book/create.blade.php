@@ -13,7 +13,7 @@
 		@endif
 
 
-    	<form method="POST" action="" enctype="multipart/form-data">
+    	<form method="POST" action="{{ route('books.store')}}" enctype="multipart/form-data">
 		@csrf
 			<table class="table">
 				<tr>
