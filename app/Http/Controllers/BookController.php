@@ -100,7 +100,15 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
-        //
+        $validated_data = $request->validate([
+            'book_title' => 'required|string|max:255',
+            'description' => 'nullable|string|max:255',
+            'author' => 'required|string|max:255',
+            'isbn' => 'required|string|unique:books,isbn|max:13',
+            'publisher' => 'required|string|max:255',
+            'genre' => 'required|string|in:Fiction,Non-Fiction,Science Fiction,Biography',
+            'photo' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
     }
 
     /**
